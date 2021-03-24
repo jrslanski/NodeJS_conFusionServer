@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var Users = require('../models/users');
 var passport = require('passport');
+var authenticate = require('../authenticate')
 
 
 const userRouter = express.Router();
@@ -35,9 +36,10 @@ userRouter.post('/signup', (req, res, next) => {
 
 userRouter.post('/login', passport.authenticate('local'), (req, res, next) => {
   
+  var token = authenticate.getToken({_id: req.user._id});
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
-  res.json({success: true, status: 'You are succesfully loggin'}); 
+  res.json({success: true, token: token, status: 'You are succesfully logged in!'}); 
 
 });
 
